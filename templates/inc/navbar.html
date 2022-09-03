@@ -17,6 +17,9 @@
           <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
         </li>
         {% endif %}
+        <li>
+          <a class="nav-link" href="{% url 'orders:cart' %}">Cart {{cart|length}}</a>
+        </li>
       </ul>
     </div>
       </nav>
