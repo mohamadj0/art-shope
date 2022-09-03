@@ -3,11 +3,24 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+
+    {% for category in categories %}
+        <div class="btn-group">
+          <a  hrf="{{ category.get_absolute_url}}" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{ category.name }}</a>
+          <div class="dropdown-menu">
+            {% for sub in category.scategory.all %}
+              <a class="dropdown-item" href="{{ sub.get_absolute_url}}">{{sub.name}}</a>
+            {% endfor %}
+          </div>
+        </div>
+    {% endfor %}    
+    <br><br>
+
     {% for product in products %}
-    <div class="card" style="width: 18rem;">
+    <div class="card" style="width: 18rem; display: inline-block;">
         <img src="{{ product.image.url }}" class="card-img-top">
         <div class="card-body">
-          <a hrf="{{ product.get_absolute_url }}" class="card-title">{{product.name}}</a>
+          <a href="{{ product.get_absolute_url }}" class="card-title">{{product.name}}</a>
         </div>
       </div>
     {% endfor %}

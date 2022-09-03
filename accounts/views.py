@@ -6,7 +6,7 @@ from utils import send_otp_code
 import random
 from .models import OtpCode, User
 from django.contrib import messages
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class RegistrationView(View):
     form_class = RegistrationForm
@@ -67,11 +67,16 @@ class LoginUserView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = authenticate(request, username=cd['phone_number'], password=cd['password'])
+            user = authenticate(request, phone_number=cd['phone_number'], password=cd['password'])
             if user is not None:
                 login(request, user)
-                messages.success(request, 'you loged in successfully', 'success')
+                messages.success(request, 'you loged in successfully', 'info')
                 return redirect('home:home')
-            else:
-                messages.error(request, 'this user loged in one time!!', 'danger')
-        return redirect('accounts:login')
+            messages.error(request, 'phone or password is wrong', 'warning')
+        return render(request, 'accounts/login.html', {'form':form})
+
+class LoginOutUserView(LoginRequiredMixin, View):
+    def get(self, request):
+        logout(request)
+        messages.success(request, 'your account logouted successfully', 'success')
+        return redirect('home:home') 
