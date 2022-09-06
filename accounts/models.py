@@ -11,8 +11,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['phone_number', 'full_name']
+    USERNAME_FIELD = 'phone_number'
+    REQUIRED_FIELDS = ['email', 'full_name']
 
     def __str__(self):
         return self.email

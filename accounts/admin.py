@@ -1,3 +1,4 @@
+from tkinter.tix import Tree
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserChangeForm, UserCreationForm
@@ -28,6 +29,14 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email', 'full_name')
     ordering = ('full_name',)
     filter_horizontal = ('groups', 'user_permissions')
+    readonly_fields = ('last_login',)
 
+
+    def get_form(self, request, obj, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        is_superuser = request.user.is_superuser
+        if not is_superuser:
+            form.base_fields['is_superuser'].disabled = True
+        return form
 
 admin.site.register(User, UserAdmin)
